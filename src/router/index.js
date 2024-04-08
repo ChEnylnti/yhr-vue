@@ -6,9 +6,14 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'login',
+      name: '登录',
       component: LoginView
-        },
+    },
+    {
+      path: '/home',
+      name: '首页',
+      component: HomeView
+    },
     {
       path: '/about',
       name: 'about',

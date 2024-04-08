@@ -43,6 +43,11 @@
 <script setup >
 import {reactive,toRefs} from "vue"
 import { login } from "@/api/login";
+import { getCurrentInstance} from "vue";
+
+const {proxy} = getCurrentInstance();
+
+
 const data=reactive({
   hr:{
     username: 'admin',
@@ -55,9 +60,14 @@ const {hr} = toRefs(data)
 function loginHandle(){
   login(hr.value).then(data=>{
     //请求成功
-    alert(data)
+    //1.先把用户信息保存起来，后面用
+    //这里保存的数据格式是key-value形式的，value只能是字符串，不能是json对象
+    window.sessionStorage.setItem("hr",JSON.stringify(data.data))
+    //2.跳转到项目首页
+    proxy.$router.replace('/home')
   }).catch(error=>{
-    alert("e")
+    // alert(JSON.stringify(error));
+    // alert("ar");
   })
 }
 </script>
