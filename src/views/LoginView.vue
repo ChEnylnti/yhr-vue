@@ -42,6 +42,7 @@
 
 <script setup >
 import {reactive,toRefs} from "vue"
+import { login } from "@/api/login";
 const data=reactive({
   hr:{
     username: 'admin',
@@ -52,8 +53,12 @@ const {hr} = toRefs(data)
 
 
 function loginHandle(){
-  alert(hr.value.username);
-  alert(hr.value.password);
+  login(hr.value).then(data=>{
+    //请求成功
+    alert(data)
+  }).catch(error=>{
+    alert("e")
+  })
 }
 </script>
 <style scoped>
