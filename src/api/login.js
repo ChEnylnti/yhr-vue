@@ -6,3 +6,11 @@ export function login(hr){
         data: hr,
     })
 }
+
+
+export function logout(){
+    return request({
+        url:'/api/logout',
+        method:'get',
+    })
+}

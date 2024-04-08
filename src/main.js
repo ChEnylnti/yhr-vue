@@ -1,5 +1,5 @@
 //前端工程的入口文件,类似于java的main方法
-import './assets/main.css'
+// import './assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

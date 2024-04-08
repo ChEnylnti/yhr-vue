@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <el-card style="max-width: 480px">
+  <div style="display: flex;justify-content: center;">
+    <el-card style="max-width: 480px;margin-top: 150px;">
     <template #header>
       <div class="card-header">
         <span>登录</span>
