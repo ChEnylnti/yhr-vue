@@ -77,17 +77,17 @@
       <el-container>
         <el-aside width="200px">
           <el-menu @select="menuSelect">
-        <el-sub-menu index="1">
-          <template #title>
-            <el-icon><Avatar /></el-icon>
-            <span>用户管理</span>
-          </template>
-          <!-- <el-menu-item-group title="Group One"> -->
-            <el-menu-item index="/list"><el-icon><User /></el-icon>用户查看</el-menu-item>
-            <el-menu-item index="/analysis"><el-icon><Histogram /></el-icon>用户分析</el-menu-item>
-          <!-- </el-menu-item-group> -->
-        </el-sub-menu>
-       
+            <template v-for="(menu,indexi) in proxy.$router.options.routes">
+              <el-sub-menu :index="indexi+''" v-if="!menu.hidden" :key="indexi">
+                <template #title>
+                  <el-icon><Avatar /></el-icon>
+                  <span>{{ menu.name }}</span>
+                </template>
+                <!-- <el-menu-item-group title="Group One"> -->
+                  <el-menu-item index="child.path" v-for="(child,indexj) in menu.children" :key="indexj"><el-icon><User /></el-icon>{{ child.name }}</el-menu-item>
+                <!-- </el-menu-item-group> -->
+              </el-sub-menu>
+            </template>
       </el-menu>
         </el-aside>
         <el-main>
