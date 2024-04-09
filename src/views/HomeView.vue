@@ -13,12 +13,55 @@
   Histogram,
   Setting,
 } from '@element-plus/icons-vue'
+import { loadMenus } from "@/api/menus";
+import HomeView from '@/views/HomeView.vue'
   const {proxy} = getCurrentInstance();
-
+  //加载指定路径下的所有 .vue组件.moudles变量类似于map，其中key就是组件的路径，value则是组件对象,读取不到当前组件
+  const modules = import.meta.glob('@/views/**/*.vue');
   const data = reactive({
-    hr: JSON.parse(window.sessionStorage.getItem("hr"))
+    hr: JSON.parse(window.sessionStorage.getItem("hr")),
+    menus: []
   })
-  const {hr} = toRefs(data);
+  const {hr,menus} = toRefs(data);
+
+  function loadAllMenus(){
+    loadMenus().then(res =>{
+      menus.value=res.data;
+      let fmtMenus = formatMenus(res.data);
+      fmtMenus.forEach(m=>{
+        proxy.$router.addRoute(m);
+      })
+    }
+    )
+  }
+
+  function formatMenus(menus){
+    let result = [];
+    menus.forEach(menu=>{
+        let {path,name,children,component} = menu;
+        if(children && children instanceof Array){
+          //递归去格式化children
+          children = formatMenus(children)
+        }
+        let formatM = {
+          path:path,
+          name:name,
+          children:children,
+          component:loadView(component),
+        }
+        result.push(formatM);
+    })
+    return result
+  }
+
+  function loadView(viewPath){
+    if(viewPath == '/src/views/HomeView.vue'){
+      return HomeView;
+    }else{
+      return modules[viewPath];
+    }
+  }
+
 
   function menuSelect(index,indexPath){
     proxy.$router.push(index)
@@ -51,6 +94,7 @@
         })
         }
   }
+  loadAllMenus();
 </script>
 
 <template>
@@ -77,14 +121,14 @@
       <el-container>
         <el-aside width="200px">
           <el-menu @select="menuSelect">
-            <template v-for="(menu,indexi) in proxy.$router.options.routes">
+            <template v-for="(menu,indexi) in menus">
               <el-sub-menu :index="indexi+''" v-if="!menu.hidden" :key="indexi">
                 <template #title>
                   <el-icon><Avatar /></el-icon>
                   <span>{{ menu.name }}</span>
                 </template>
                 <!-- <el-menu-item-group title="Group One"> -->
-                  <el-menu-item index="child.path" v-for="(child,indexj) in menu.children" :key="indexj"><el-icon><User /></el-icon>{{ child.name }}</el-menu-item>
+                  <el-menu-item :index="child.path" v-for="(child,indexj) in menu.children" :key="indexj"><el-icon><User /></el-icon>{{ child.name }}</el-menu-item>
                 <!-- </el-menu-item-group> -->
               </el-sub-menu>
             </template>

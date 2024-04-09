@@ -32,7 +32,7 @@ const router = createRouter({
         {
           path: '/log',
           name: '用户日志',
-          component: UserLog
+          component: UserLog  
         },
       ]
     },
