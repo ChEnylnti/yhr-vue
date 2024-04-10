@@ -62,9 +62,11 @@ function loginHandle(){
     //请求成功
     //1.先把用户信息保存起来，后面用
     //这里保存的数据格式是key-value形式的，value只能是字符串，不能是json对象
-    window.sessionStorage.setItem("hr",JSON.stringify(data.data))
+    window.sessionStorage.setItem("hr",JSON.stringify(data.data));
+    //获取到请求地址栏的redirect参数
+    let redirect = proxy.$router.currentRoute.value.query.redirect;
     //2.跳转到项目首页
-    proxy.$router.replace('/home')
+    proxy.$router.replace(redirect ? redirect : '/home')
   }).catch(error=>{
     // alert(JSON.stringify(error));
     // alert("ar");

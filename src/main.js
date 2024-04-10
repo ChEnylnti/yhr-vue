@@ -31,22 +31,30 @@ router.beforeEach((to,from,next)=>{
         next();
         return;
     }
-    //在这里做一个判断，判断当前的跳转是普通的页面点击跳转还是浏览器按F5刷新跳转（按F5的特点就是内存中的数据没有了）
-    if(mStore.menus && mStore.menus.length != 0){
-        //说明普通页面跳转
-        next();
-    }else {
-        //说明用户点击了浏览器刷新按钮进行跳转
-        //此时要先去初始化菜单然后再去跳转
-        mStore.initMenus().then(res=>{
-            res.forEach(r=>{
-                router.addRoute(r);
+    if (window.sessionStorage.getItem("hr")) {
+        //说明用户已经登录
+        //在这里做一个判断，判断当前的跳转是普通的页面点击跳转还是浏览器按F5刷新跳转（按F5的特点就是内存中的数据没有了）
+        if(mStore.menus && mStore.menus.length != 0){
+            //说明普通页面跳转
+            next();
+        }else {
+            //说明用户点击了浏览器刷新按钮进行跳转
+            //此时要先去初始化菜单然后再去跳转
+            mStore.initMenus().then(res=>{
+                res.forEach(r=>{
+                    router.addRoute(r);
+                });
+                //这个还是去下个页面，但是和无参的相比，这里表示终止当前的跳转，重新开启一次新的跳转
+                //这种写法有一个好处，可以确保前面的路由已经动态添加完成了
+                next({...to});
             });
-            //这个还是去下个页面，但是和无参的相比，这里表示终止当前的跳转，重新开启一次新的跳转
-            //这种写法有一个好处，可以确保前面的路由已经动态添加完成了
-            next({...to});
-         });
+        }
+    }else{
+        //说明用户未登录,去登录
+        next('/?redirect='+to.path);
     }
+    
+    
 })
 
 
