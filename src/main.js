@@ -29,6 +29,7 @@ router.beforeEach((to,from,next)=>{
         //说明要去登录页面，登录页面可以直接去
         //表示继续去下个页面
         next();
+        return;
     }
     //在这里做一个判断，判断当前的跳转是普通的页面点击跳转还是浏览器按F5刷新跳转（按F5的特点就是内存中的数据没有了）
     if(mStore.menus && mStore.menus.length != 0){

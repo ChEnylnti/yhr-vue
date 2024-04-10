@@ -21,6 +21,9 @@ export const menusStore=defineStore('menus',{
       menus:[]
   }),
   actions:{
+      clearMenus(){
+        this.menus = [];
+      },
       initMenus(){
         return new Promise(resolve => {
           loadMenus().then(res =>{

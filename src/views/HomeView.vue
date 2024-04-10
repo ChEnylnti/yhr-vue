@@ -88,6 +88,8 @@ const mStore = menusStore();
             window.sessionStorage.removeItem('hr');
             //2.跳转到登录页面
             proxy.$router.replace('/');
+            //清空菜单数组
+            mStore.clearMenus();
           })
         })
         .catch(() => {
