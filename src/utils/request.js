@@ -1,6 +1,7 @@
 // 在这个文件中对请求和相应进行封装o
 // import { axios } from "axios";
- import  axios from "axios";
+ import router from "@/router";
+import  axios from "axios";
  import { ElMessage } from "element-plus";
 //统一加请求头
 axios.defaults.headers['Content-Type']='application/json;charset=utf-8'
@@ -35,6 +36,10 @@ service.interceptors.response.use(success => {
         return Promise.reject((success.data.message));
     }
 },error =>{
+    if (error.response.status == 401 || error.response.status == 500) {
+        //说明未登录
+        router.replace('/');
+    }
     //http状态吗不是200就会进入到这个回调中
     ElMessage({
         message: error,

@@ -1,6 +1,13 @@
 <template>
   <div style="display: flex;justify-content: center;">
-    <el-card style="max-width: 480px;margin-top: 150px;">
+    <el-card 
+    v-loading="loading"
+    element-loading-text="Loading..."
+    :element-loading-spinner="svg"
+    element-loading-svg-view-box="-10, -10, 50, 50"
+    element-loading-background="rgba(122, 122, 122, 0.8)"
+    :data="tableData"
+    style="max-width: 480px;margin-top: 150px;">
     <template #header>
       <div class="card-header">
         <span>登录</span>
@@ -52,13 +59,26 @@ const data=reactive({
   hr:{
     username: 'admin',
     password: '123'
-  }
+  },
+  loading:false
 })
-const {hr} = toRefs(data)
+const {hr,loading} = toRefs(data)
 
+const svg = `
+        <path class="path" d="
+          M 30 15
+          L 28 17
+          M 25.61 25.61
+          A 15 15, 0, 0, 1, 15 30
+          A 15 15, 0, 1, 1, 27.99 7.5
+          L 15 15
+        " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
+      `
 
 function loginHandle(){
+  loading.value=true
   login(hr.value).then(data=>{
+    loading.value=false
     //请求成功
     //1.先把用户信息保存起来，后面用
     //这里保存的数据格式是key-value形式的，value只能是字符串，不能是json对象
@@ -70,6 +90,7 @@ function loginHandle(){
   }).catch(error=>{
     // alert(JSON.stringify(error));
     // alert("ar");
+    loading.value=false
   })
 }
 </script>
