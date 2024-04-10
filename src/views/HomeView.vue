@@ -15,12 +15,16 @@
 } from '@element-plus/icons-vue'
 import { loadMenus } from "@/api/menus";
 import HomeView from '@/views/HomeView.vue'
+import { menusStore } from "@/stores/index";
+
+const mStore = menusStore();
+
   const {proxy} = getCurrentInstance();
   //加载指定路径下的所有 .vue组件.moudles变量类似于map，其中key就是组件的路径，value则是组件对象,读取不到当前组件
   const modules = import.meta.glob('@/views/**/*.vue');
   const data = reactive({
     hr: JSON.parse(window.sessionStorage.getItem("hr")),
-    menus: []
+    menus: mStore.menus
   })
   const {hr,menus} = toRefs(data);
 
@@ -94,7 +98,7 @@ import HomeView from '@/views/HomeView.vue'
         })
         }
   }
-  loadAllMenus();
+  // loadAllMenus();
 </script>
 
 <template>
