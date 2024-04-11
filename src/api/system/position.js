@@ -9,6 +9,13 @@ export function loadAllPositions(params){
     })
 }
 
+export function getPositionById(id){
+    return request({
+        url:'/api/system/basic/position/'+id,
+        method:'get'
+    })
+}
+
 // 请求体的参数用data
 export function updatePosition(data){
     return request({

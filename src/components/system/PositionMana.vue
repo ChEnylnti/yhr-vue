@@ -1,4 +1,5 @@
 <template>
+<div>
   <div>
     <el-table :data="positions" border stripe  style="width: 100%">
     <el-table-column prop="id" label="编号" width="180" />
@@ -7,7 +8,7 @@
     <el-table-column label="是否启用" >
         <template #default="scope">
             <el-switch
-                @change="enabledChange(scope.row)"
+                @change="handleUpdate(scope.row)"
                 v-model="scope.row.enabled"
                 inline-prompt
                 active-text="是"
@@ -34,23 +35,68 @@
     layout="sizes,prev, pager, next, jumper, ->, total" :total="total" />
   </div>
   </div>
+  <el-dialog
+    v-model="dialogVisible"
+    title="编辑职位"
+    width="500"
+  >
+    <div>
+        <table>
+            <tr>
+                <td>职位名称:</td>
+                <td>
+                    <el-input v-model="updatePos.name" style="width: 240px" placeholder="Please input" />
+                </td>
+            </tr>
+            <tr>
+                <td>是否启用:</td>
+                <td>
+                    <el-switch
+                        v-model="updatePos.enabled"
+                        inline-prompt
+                        active-text="是"
+                        inactive-text="否"
+                    />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="handleUpdate(updatePos)">
+          确认
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
+</div>
 </template>
 
 <script setup>
 import {reactive,toRefs} from 'vue';
-import {loadAllPositions,updatePosition} from '@/api/system/position';
+import {loadAllPositions,updatePosition,getPositionById} from '@/api/system/position';
 const data = reactive({
     positions:[],
     total: 0,
     page: 1,
-    size: 10
+    size: 10,
+    updatePos: undefined,
+    dialogVisible: false
 })
 
-const {positions,total,page,size} = toRefs(data)
+const {positions,total,page,size,dialogVisible,updatePos} = toRefs(data)
 
-function enabledChange(row){
+function handleEdit(index,data){
+    getPositionById(data.id).then(res=>{
+        dialogVisible.value=true;
+        updatePos.value = res.data;
+    })
+}
+function handleUpdate(row){
     // alert(JSON.stringify(row))
     updatePosition(row).then(res=>{
+        dialogVisible.value=false
         //更新完毕刷新
         positionList();
     })
