@@ -32,3 +32,10 @@ export function addPosition(data){
         data: data
     })
 }
+
+export function deletePositionById(id){
+    return request({
+        url:'/api/system/basic/position/'+id,
+        method:'delete'
+    })
+}

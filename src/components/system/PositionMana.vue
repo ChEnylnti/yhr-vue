@@ -87,8 +87,9 @@
 
 <script setup>
 import {reactive,toRefs} from 'vue';
-import {loadAllPositions,updatePosition,getPositionById,addPosition} from '@/api/system/position';
+import {loadAllPositions,updatePosition,getPositionById,addPosition,deletePositionById} from '@/api/system/position';
 import {Plus} from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 const data = reactive({
     positions:[],
     total: 0,
@@ -136,6 +137,31 @@ function positionList(){
     loadAllPositions({page:page.value,size:size.value}).then(res=>{
         positions.value = res.data;
         total.value = res.total;
+    })
+}
+
+function handleDelete(index,row){
+    ElMessageBox.confirm(
+    '此操作将删除【'+row.name+'】部门，是否继续?',
+    'Warning',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+      deletePositionById(row.id).then(res=>{
+        //刷新
+        positionList();
+      })
+
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消删除',
+      })
     })
 }
 
