@@ -16,6 +16,7 @@
 import { loadMenus } from "@/api/menus";
 import HomeView from '@/views/HomeView.vue'
 import { menusStore } from "@/stores/index";
+import { ArrowRight } from '@element-plus/icons-vue'
 
 const mStore = menusStore();
 
@@ -33,6 +34,8 @@ const mStore = menusStore();
       menus.value=res.data;
       let fmtMenus = formatMenus(res.data);
       fmtMenus.forEach(m=>{
+        console.log(m);
+        //往路由里加
         proxy.$router.addRoute(m);
       })
     }
@@ -141,6 +144,13 @@ const mStore = menusStore();
       </el-menu>
         </el-aside>
         <el-main>
+          
+          <el-breadcrumb :separator-icon="ArrowRight" v-if="proxy.$router.currentRoute.value.path!='/home'">
+            <el-breadcrumb-item :to="{ path: '/home' }">主页</el-breadcrumb-item>
+            <el-breadcrumb-item>{{ proxy.$router.currentRoute.value.name }}</el-breadcrumb-item>
+          </el-breadcrumb>
+          <div v-if="proxy.$router.currentRoute.value.path=='/home'" style="font-size: 35px;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;color: red;text-align: center;">
+            欢迎来到易人事!</div>
           <RouterView />
         </el-main>
       </el-container>

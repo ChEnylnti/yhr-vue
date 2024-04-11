@@ -42,10 +42,13 @@ router.beforeEach((to,from,next)=>{
             //此时要先去初始化菜单然后再去跳转
             mStore.initMenus().then(res=>{
                 res.forEach(r=>{
+                    //添加路由
+                    // console.log(r);
                     router.addRoute(r);
                 });
                 //这个还是去下个页面，但是和无参的相比，这里表示终止当前的跳转，重新开启一次新的跳转
                 //这种写法有一个好处，可以确保前面的路由已经动态添加完成了
+                console.log(mStore.menus);
                 next({...to});
             });
         }

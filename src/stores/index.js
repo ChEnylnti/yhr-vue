@@ -29,6 +29,7 @@ export const menusStore=defineStore('menus',{
           loadMenus().then(res =>{
             this.menus=res.data;
             let fmtMenus = formatMenus(res.data);
+            // console.log(fmtMenus);
             resolve(fmtMenus);
           }
           )

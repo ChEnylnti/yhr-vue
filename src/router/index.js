@@ -16,7 +16,7 @@ const router = createRouter({
     },
     {
       path: '/home',
-      name: '用户管理',
+      name: '首页',
       component: HomeView,
       children:[
         {
