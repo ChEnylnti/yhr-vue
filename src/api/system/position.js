@@ -1,9 +1,9 @@
 import request from '@/utils/request';
-export function loadAllPositions(parms){
+export function loadAllPositions(params){
     return request({
         url:'/api/system/basic/position',
         method:'get',
-        parms: parms
+        params: params
     })
 }
 

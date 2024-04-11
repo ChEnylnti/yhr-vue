@@ -17,6 +17,12 @@
       </template>
     </el-table-column>
   </el-table>
+  <div style="display: flex;justify-content: flex-end;">
+    <el-pagination background 
+     @change="paginationChange"
+    :page-sizes="[5,10,20,30,50,100]" 
+    layout="sizes,prev, pager, next, jumper, ->, total" :total="total" />
+  </div>
   </div>
 </template>
 
@@ -24,15 +30,24 @@
 import {reactive,toRefs} from 'vue';
 import {loadAllPositions} from '@/api/system/position';
 const data = reactive({
-    positions:[]
+    positions:[],
+    total: 0,
+    page: 1,
+    size: 10
 })
 
-const {positions} = toRefs(data)
+const {positions,total,page,size} = toRefs(data)
 
+function paginationChange(newPage,newSize){
+    page.value = newPage;
+    size.value = newSize;
+    positionList();
+}
 
 function positionList(){
-    loadAllPositions().then(res=>{
+    loadAllPositions({page:page.value,size:size.value}).then(res=>{
         positions.value = res.data;
+        total.value = res.total;
     })
 }
 
