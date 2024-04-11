@@ -24,3 +24,11 @@ export function updatePosition(data){
         data: data
     })
 }
+
+export function addPosition(data){
+    return request({
+        url:'/api/system/basic/position',
+        method:'post',
+        data: data
+    })
+}

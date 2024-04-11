@@ -1,6 +1,18 @@
 <template>
 <div>
-  <div>
+    <div>
+        <el-input
+        @keydown.enter.native="handleAdd"
+      v-model="addPos.name"
+      style="width: 240px"
+      placeholder="请输入职位名称"
+      :prefix-icon="Plus"
+    />
+    <el-button type="primary" style="margin-left: 5px;" @click="handleAdd">
+      添加<el-icon class="el-icon--right"><Plus/></el-icon>
+    </el-button>
+    </div>
+  <div style="margin-top: 10px;">
     <el-table :data="positions" border stripe  style="width: 100%">
     <el-table-column prop="id" label="编号" width="180" />
     <el-table-column prop="name" label="职位名称" width="180" />
@@ -28,7 +40,7 @@
       </template>
     </el-table-column>
   </el-table>
-  <div style="display: flex;justify-content: flex-end;">
+  <div style="display: flex;justify-content: flex-end;margin-top: 10px;">
     <el-pagination background 
      @change="paginationChange"
     :page-sizes="[5,10,20,30,50,100]" 
@@ -75,17 +87,28 @@
 
 <script setup>
 import {reactive,toRefs} from 'vue';
-import {loadAllPositions,updatePosition,getPositionById} from '@/api/system/position';
+import {loadAllPositions,updatePosition,getPositionById,addPosition} from '@/api/system/position';
+import {Plus} from '@element-plus/icons-vue'
 const data = reactive({
     positions:[],
     total: 0,
     page: 1,
     size: 10,
     updatePos: undefined,
-    dialogVisible: false
+    dialogVisible: false,
+    addPos: {name: ''}
 })
 
-const {positions,total,page,size,dialogVisible,updatePos} = toRefs(data)
+const {positions,total,page,size,dialogVisible,updatePos,addPos} = toRefs(data)
+
+function handleAdd(){
+    addPosition(addPos.value).then(res=>{
+        //刷新
+        positionList();
+        //清空输入框
+        addPos.value.name = '';
+    })
+}
 
 function handleEdit(index,data){
     getPositionById(data.id).then(res=>{
