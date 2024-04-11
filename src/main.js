@@ -5,7 +5,8 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-
+//国际化
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import App from './App.vue'
 //导入路由文件，按理说应该是 ./router/index.js，但是后缀是.js可以省略，进一步，后缀如果是index也可以省略
 import router from './router'
@@ -16,7 +17,8 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
-app.use(ElementPlus)
+//国际化
+app.use(ElementPlus,{locale: zhCn})
 
 
 const mStore = menusStore();
