@@ -4,7 +4,17 @@
     <el-table-column prop="id" label="编号" width="180" />
     <el-table-column prop="name" label="职位名称" width="180" />
     <el-table-column prop="createDate" label="创建日期" />
-    <el-table-column prop="enabled" label="是否启用" />
+    <el-table-column label="是否启用" >
+        <template #default="scope">
+            <el-switch
+                @change="enabledChange(scope.row)"
+                v-model="scope.row.enabled"
+                inline-prompt
+                active-text="是"
+                inactive-text="否"
+            />
+        </template>
+    </el-table-column>
     <el-table-column label="操作">
       <template #default="scope">
         <el-button size="small" @click="handleEdit(scope.$index, scope.row)"
@@ -28,7 +38,7 @@
 
 <script setup>
 import {reactive,toRefs} from 'vue';
-import {loadAllPositions} from '@/api/system/position';
+import {loadAllPositions,updatePosition} from '@/api/system/position';
 const data = reactive({
     positions:[],
     total: 0,
@@ -37,6 +47,15 @@ const data = reactive({
 })
 
 const {positions,total,page,size} = toRefs(data)
+
+function enabledChange(row){
+    // alert(JSON.stringify(row))
+    updatePosition(row).then(res=>{
+        //更新完毕刷新
+        positionList();
+    })
+}
+
 
 function paginationChange(newPage,newSize){
     page.value = newPage;
