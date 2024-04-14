@@ -38,7 +38,7 @@
     </div>
     <template #footer>
       <div style="display: flex;justify-content: center;">
-        <el-button>重制</el-button>
+        <el-button>重置</el-button>
         <el-button type="primary" @click="loginHandle">登录</el-button>
       </div>
       

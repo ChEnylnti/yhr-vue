@@ -142,7 +142,7 @@ function positionList(){
 
 function handleDelete(index,row){
     ElMessageBox.confirm(
-    '此操作将删除【'+row.name+'】部门，是否继续?',
+    '此操作将删除【'+row.name+'】职位，是否继续?',
     'Warning',
     {
       confirmButtonText: '确定',

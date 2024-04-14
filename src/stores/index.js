@@ -31,6 +31,7 @@ export const menusStore=defineStore('menus',{
             let fmtMenus = formatMenus(res.data);
             // console.log(fmtMenus);
             resolve(fmtMenus);
+            // console.log(router.getRoutes());
           }
           )
         })
