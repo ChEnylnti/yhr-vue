@@ -7,9 +7,6 @@
     <el-tab-pane label="职位管理" name="PositionMana">
       <position-mana></position-mana>
     </el-tab-pane>
-    <el-tab-pane label="职称管理" name="third">职称管理</el-tab-pane>
-    <el-tab-pane label="奖惩规则" name="fourth">奖惩规则</el-tab-pane>
-    <el-tab-pane label="权限组" name="fifth">权限组</el-tab-pane>
   </el-tabs>
   </div>
 </template>

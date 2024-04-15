@@ -103,6 +103,9 @@ const data = reactive({
 const {positions,total,page,size,dialogVisible,updatePos,addPos} = toRefs(data)
 
 function handleAdd(){
+    if (addPos.value.name=='') {
+      return
+    }
     addPosition(addPos.value).then(res=>{
         //刷新
         positionList();
