@@ -60,6 +60,7 @@ import { Search, Plus } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getAllSalaries, toAddSalary, updateSalary, deleteSalaryById } from '@/api/salary/salary';
 
+
 const data = reactive({
     salaries: [],
     dialogVisible: false,
